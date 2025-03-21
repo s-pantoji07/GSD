@@ -28,9 +28,16 @@ const Categories = () => {
 
   return (
     <div className="categories-container">
-      <h2>Category</h2>
+      <div className="categories-header">
+        <h2>Category</h2>
+        <div className="button-container">
+          <button className="view-all">View All</button>
+          <button className="scroll-btn left" onClick={scrollLeft}>{"<"}</button>
+          <button className="scroll-btn right" onClick={scrollRight}>{">"}</button>
+        </div>
+      </div>
+
       <div className="categories-wrapper">
-        <button className="scroll-btn left" onClick={scrollLeft}>{"<"}</button>
         <div className="categories-list" ref={scrollRef}>
           {categories.map((category, index) => (
             <div className="category-item" key={index}>
@@ -39,9 +46,7 @@ const Categories = () => {
             </div>
           ))}
         </div>
-        <button className="scroll-btn right" onClick={scrollRight}>{">"}</button>
       </div>
-      <button className="view-all">View All</button>
     </div>
   );
 };
