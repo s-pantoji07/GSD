@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Categories.css";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
   const scrollRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -26,6 +28,10 @@ const Categories = () => {
     scrollRef.current.scrollBy({ left: 150, behavior: "smooth" });
   };
 
+  const handleCategoryClick = (category) => {
+    navigate(`/products?category=${category.name}`);
+  };
+
   return (
     <div className="categories-container">
       <div className="categories-header">
@@ -40,7 +46,11 @@ const Categories = () => {
       <div className="categories-wrapper">
         <div className="categories-list" ref={scrollRef}>
           {categories.map((category, index) => (
-            <div className="category-item" key={index}>
+            <div
+              className="category-item"
+              key={index}
+              onClick={() => handleCategoryClick(category)}
+            >
               <img src={category.image} alt={category.name} />
               <p>{category.name}</p>
             </div>
