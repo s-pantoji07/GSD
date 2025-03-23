@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { FaHeart, FaStar } from "react-icons/fa"; // Ensure icons are installed via `react-icons`
+import { FaHeart, FaStar } from "react-icons/fa"; // Ensure react-icons is installed
 import "../styles/Productcard.css";
 
 const ProductCard = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
 
-  // Check if product is undefined
+  // Ensure product is not undefined
   if (!product) {
     return <p>Loading product...</p>;
   }
@@ -14,34 +14,32 @@ const ProductCard = ({ product }) => {
     <div className="product-card">
       {/* Product Image */}
       <div className="image-container">
-        <img src={product.image} alt={product.name} />
+        <img src={product?.image} alt={product?.name} />
       </div>
 
       {/* Product Details */}
-      <h3 className="product-name">{product.name}</h3>
+      <h3 className="product-name">{product?.name}</h3>
 
       {/* Ratings */}
       <div className="ratings">
-        {Array(5)
-          .fill()
-          .map((_, index) => (
-            <FaStar
-              key={index}
-              className={index < (product.rating || 0) ? "star filled" : "star"}
-            />
-          ))}
-        <span className="review-count">({product.reviews || 0})</span>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <FaStar
+            key={index}
+            className={index < (product?.review || 0) ? "star filled" : "star"}
+          />
+        ))}
+        <span className="review-count">({product?.review || 0})</span>
       </div>
 
       {/* Pricing */}
       <div className="price">
         <span className="original-price">
-          ${product.originalPrice ? product.originalPrice.toFixed(2) : "0.00"}
+          ${product?.price_before_discount?.toFixed(2) || "0.00"}
         </span>
         <span className="discounted-price">
-          ${product.discountedPrice ? product.discountedPrice.toFixed(2) : "0.00"}
+          ${product?.price_after_discount?.toFixed(2) || "0.00"}
         </span>
-        <span className="discount-tag">{product.discount ? product.discount : 0}% OFF</span>
+        <span className="discount-tag">{product?.discount ?? 0}% OFF</span>
       </div>
 
       {/* Quantity & Buttons */}
@@ -53,7 +51,7 @@ const ProductCard = ({ product }) => {
             </option>
           ))}
         </select>
-        <button className="add-to-cart"> Add to Cart</button>
+        <button className="add-to-cart">Add to Cart</button>
         <button className="wishlist">
           <FaHeart />
         </button>
