@@ -1,40 +1,41 @@
 import { useState } from "react";
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Categories from "./pages/Categories";
-import ProductCard from "./components/ProductCard";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Products from "./pages/Products";
-
-// const sampleProduct = {
-//   image: "https://via.placeholder.com/150",
-//   name: "Sample Product",
-//   rating: 4,
-//   reviews: 20,
-//   originalPrice: 50,
-//   discountedPrice: 40,
-//   discount: 20,
-// };
+import Auth from "./pages/Auth";
 
 function Layout() {
   return (
     <div>
       <Home />
       <Categories />
-      {/* <ProductCard />  */}
-      
     </div>
+  );
+}
+
+function MainLayout() {
+  const location = useLocation();
+  const hideNavbarRoutes = ["/auth"];
+
+  return (
+    <>
+      {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Layout />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/auth" element={<Auth />} />
+      </Routes>
+    </>
   );
 }
 
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Layout />} />
-        <Route path="/products" element={<Products />} />
-      </Routes>
+      <MainLayout />
     </Router>
   );
 }

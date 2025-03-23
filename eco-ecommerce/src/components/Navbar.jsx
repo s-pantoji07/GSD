@@ -73,7 +73,7 @@ export default function Navbar() {
             href="#"
             className="font-semibold hover:text-green-600 flex items-center"
           >
-            PAGES <ChevronDown size={16} />
+            About Us  
           </a>
         </div>
 
