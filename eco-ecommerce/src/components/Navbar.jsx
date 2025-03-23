@@ -65,7 +65,7 @@ export default function Navbar() {
 
       {/* Right Section: Navigation + Icons */}
       <div className="hidden lg:flex items-center space-x-6 text-black">
-        <a href="#" className="font-semibold hover:text-green-600">
+        <a href="/" className="font-semibold hover:text-green-600">
           HOME
         </a>
         <div className="relative">

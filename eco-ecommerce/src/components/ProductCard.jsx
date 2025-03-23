@@ -10,6 +10,9 @@ const ProductCard = ({ product }) => {
     return <p>Loading product...</p>;
   }
 
+  // Calculate total price based on quantity
+  const totalPrice = (product?.price_after_discount || 0) * quantity;
+
   return (
     <div className="product-card">
       {/* Product Image */}
@@ -37,14 +40,17 @@ const ProductCard = ({ product }) => {
           ${product?.price_before_discount?.toFixed(2) || "0.00"}
         </span>
         <span className="discounted-price">
-          ${product?.price_after_discount?.toFixed(2) || "0.00"}
+          ${totalPrice.toFixed(2)}
         </span>
         <span className="discount-tag">{product?.discount ?? 0}% OFF</span>
       </div>
 
       {/* Quantity & Buttons */}
       <div className="cart-actions">
-        <select value={quantity} onChange={(e) => setQuantity(Number(e.target.value))}>
+        <select
+          value={quantity}
+          onChange={(e) => setQuantity(Number(e.target.value))}
+        >
           {[...Array(10).keys()].map((num) => (
             <option key={num + 1} value={num + 1}>
               {num + 1}
