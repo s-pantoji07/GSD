@@ -17,7 +17,7 @@ const Products = () => {
 
   const fetchProductsByCategory = async (categoryName) => {
     try {
-      const response = await fetch('http://localhost:5000/api/products?category=${categoryName}');
+      const response = await fetch(`http://localhost:5000/api/products?category=${categoryName}`);
       
       // Log response to see what's coming from the server
       const text = await response.text();
