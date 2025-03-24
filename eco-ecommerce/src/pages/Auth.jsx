@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { registerUser, loginUser } from "../api/auth";
 import "../Styles/Auth.css";
 
@@ -14,6 +15,9 @@ const Auth = () => {
     confirmPassword: "",
   });
 
+  const [message, setMessage] = useState(""); // State for success message
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -21,31 +25,41 @@ const Auth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      let successMessage = "";
       if (!isLogin) {
         // Sign Up
         if (formData.password !== formData.confirmPassword) {
-          alert("Passwords do not match");
+          setMessage("Passwords do not match");
           return;
         }
         const res = await registerUser(formData);
-        alert(res.data.message);
+        successMessage = res.data.message;
       } else {
         // Sign In
         const res = await loginUser({
           email: formData.email,
           password: formData.password,
         });
-        alert("Login successful");
+        successMessage = "Login successful";
         localStorage.setItem("token", res.data.token);
       }
+
+      // Set success message
+      setMessage(successMessage);
+
+      // Wait for 3 seconds and then redirect
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (error) {
-      alert(error.response?.data?.message || "Something went wrong");
+      setMessage(error.response?.data?.message || "Something went wrong");
     }
   };
 
   return (
     <div className="auth-page">
       <div className="auth-container">
+        {message && <div className="alert-message">{message}</div>} {/* Display message */}
         <p>Please enter your details</p>
         <h2>{isLogin ? "Welcome back" : "Create an account"}</h2>
         <form onSubmit={handleSubmit} className={!isLogin ? "signup-form" : ""}>
@@ -87,7 +101,10 @@ const Auth = () => {
         </form>
         <p className="toggle-auth">
           {isLogin ? "Don't have an account?" : "Already have an account?"}
-          <a href="#" onClick={() => setIsLogin(!isLogin)}>
+          <a href="/" onClick={(e) => {
+            e.preventDefault();
+            setIsLogin(!isLogin);
+          }}>
             {isLogin ? " Sign up" : " Sign in"}
           </a>
         </p>

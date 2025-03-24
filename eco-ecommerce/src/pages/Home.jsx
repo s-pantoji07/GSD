@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import "../Styles/Home.css";
-
+import { useNavigate } from "react-router-dom";
 const Home = () => {
   const categoriesRef = useRef(null); // Reference to Categories section
-
+  const navigate = useNavigate();
   const scrollToCategories = () => {
     if (categoriesRef.current) {
       categoriesRef.current.scrollIntoView({ behavior: "smooth" }); // Smooth scroll
@@ -24,7 +24,12 @@ const Home = () => {
             <button className="green-button" onClick={scrollToCategories}>
               START SHOPPING
             </button>
-            <button className="black-button">JOIN NOW</button>
+            <button
+              className="black-button"
+              onClick={() => navigate("/auth")}
+            >
+              JOIN NOW
+            </button>
           </div>
           <div className="stats">
             <div>
