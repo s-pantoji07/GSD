@@ -7,7 +7,7 @@ import Products from "./pages/Products";
 import Auth from "./pages/Auth";
 
 const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
-const REDIRECT_DELAY = 1000; // 1 second
+const REDIRECT_DELAY = 5000; // 1 second
 
 function Layout() {
   return (

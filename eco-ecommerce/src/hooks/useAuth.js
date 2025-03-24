@@ -1,32 +1,28 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SESSION_TIMEOUT = 60 * 60 * 1000; // 1 hour in milliseconds
-const REDIRECT_DELAY = 15000; // 15 seconds
-
 const useAuth = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const loginTimestamp = localStorage.getItem("loginTimestamp");
+    const loginTime = localStorage.getItem("loginTime");
+    const currentTime = new Date().getTime();
 
-    if (token && loginTimestamp) {
-      const timeElapsed = Date.now() - parseInt(loginTimestamp, 10);
+    if (token && loginTime) {
+      const elapsedTime = currentTime - parseInt(loginTime, 10);
       
-      if (timeElapsed > SESSION_TIMEOUT) {
-        // Session expired, log out user
+      // If more than 1 hour (3600000ms), log out
+      if (elapsedTime > 3600000) {
         localStorage.removeItem("token");
-        localStorage.removeItem("loginTimestamp");
+        localStorage.removeItem("loginTime");
         navigate("/auth");
       }
     } else {
-      // No token found, redirect after 15 seconds
-      const redirectTimer = setTimeout(() => {
+      // If user is not logged in, redirect after 15 seconds
+      setTimeout(() => {
         navigate("/auth");
-      }, REDIRECT_DELAY);
-
-      return () => clearTimeout(redirectTimer);
+      }, 15000);
     }
   }, [navigate]);
 };
