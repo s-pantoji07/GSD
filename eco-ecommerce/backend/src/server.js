@@ -16,6 +16,7 @@ connectDB();
 // Routes
 app.use("/api/categories", require("./routes/categoryRoutes"));
 app.use("/api/products", require("./routes/productRoutes"));
+app.use("/api/auth", require("./routes/userRoutes"));
 
 app.get("/", (req, res) => {
   res.send("API is running...");
