@@ -27,7 +27,6 @@ const Auth = () => {
     try {
       let successMessage = "";
       if (!isLogin) {
-        // Sign Up
         if (formData.password !== formData.confirmPassword) {
           setMessage("Passwords do not match");
           return;
@@ -35,19 +34,19 @@ const Auth = () => {
         const res = await registerUser(formData);
         successMessage = res.data.message;
       } else {
-        // Sign In
         const res = await loginUser({
           email: formData.email,
           password: formData.password,
         });
         successMessage = "Login successful";
+        
+        // Store token and login timestamp
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("loginTimestamp", Date.now()); // Store login time
       }
-
-      // Set success message
+  
       setMessage(successMessage);
-
-      // Wait for 3 seconds and then redirect
+      
       setTimeout(() => {
         navigate("/");
       }, 2000);
@@ -55,6 +54,7 @@ const Auth = () => {
       setMessage(error.response?.data?.message || "Something went wrong");
     }
   };
+  
 
   return (
     <div className="auth-page">

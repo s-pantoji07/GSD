@@ -1,14 +1,27 @@
 import { useRef } from "react";
-import "../Styles/Home.css";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth"; // Import authentication hook
+import "../Styles/Home.css";
+
 const Home = () => {
-  const categoriesRef = useRef(null); // Reference to Categories section
+  useAuth(); // Check session status
+
+  const categoriesRef = useRef(null);
   const navigate = useNavigate();
+
   const scrollToCategories = () => {
     if (categoriesRef.current) {
-      categoriesRef.current.scrollIntoView({ behavior: "smooth" }); // Smooth scroll
+      categoriesRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("loginTimestamp");
+    navigate("/auth");
+  };
+
+  // <button onClick={handleLogout}>Logout</button>
 
   return (
     <div className="home-container">
@@ -24,10 +37,7 @@ const Home = () => {
             <button className="green-button" onClick={scrollToCategories}>
               START SHOPPING
             </button>
-            <button
-              className="black-button"
-              onClick={() => navigate("/auth")}
-            >
+            <button className="black-button" onClick={() => navigate("/auth")}>
               JOIN NOW
             </button>
           </div>
