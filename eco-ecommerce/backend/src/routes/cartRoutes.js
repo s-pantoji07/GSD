@@ -13,6 +13,6 @@ router.get("/:userId", getCart);
 router.put("/update", updateCartItem);
 
 // Remove an item from the cart
-router.delete("/:userId/:productId", removeFromCart);
+router.delete("/:userId/:itemId", removeFromCart);
 
 module.exports = router;

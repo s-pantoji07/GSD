@@ -64,31 +64,37 @@ exports.getCart = async (req, res) => {
 
 // Remove an item from cart
 exports.removeFromCart = async (req, res) => {
-  const { userId, productId } = req.params;
+  const { userId, itemId } = req.params; // Use itemId
 
   try {
-    let cart = await Cart.findOne({ userId });
-    if (!cart) {
-      return res.status(404).json({ success: false, message: "Cart not found" });
-    }
+      let cart = await Cart.findOne({ userId });
+      if (!cart) {
+          return res.status(404).json({ success: false, message: "Cart not found" });
+      }
 
-    cart.items = cart.items.filter((item) => !item.productId.equals(productId));
+      // Ensure correct filtering with itemId instead of productId
+      cart.items = cart.items.filter((item) => item._id.toString() !== itemId.toString());
 
-    // Recalculate total price
-    cart.totalPrice = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      // Recalculate total price
+      cart.totalPrice = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-    // If cart is empty, remove it
-    if (cart.items.length === 0) {
-      await Cart.deleteOne({ _id: cart._id });
-      return res.status(200).json({ success: true, message: "Cart is now empty" });
-    }
+      if (cart.items.length === 0) {
+          await Cart.deleteOne({ _id: cart._id });
+          return res.status(200).json({ success: true, message: "Cart is now empty" });
+      }
 
-    await cart.save();
-    res.status(200).json({ success: true, message: "Item removed from cart", cart });
+      // Ensure save happens
+      await cart.save();
+
+      res.status(200).json({ success: true, message: "Item removed from cart", cart });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+      console.error("Error in removeFromCart:", error);
+      res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
+
 
 // Update item quantity in cart
 exports.updateCartItem = async (req, res) => {
