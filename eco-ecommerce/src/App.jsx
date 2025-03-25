@@ -6,6 +6,8 @@ import Categories from "./pages/Categories";
 import Products from "./pages/Products";
 import Auth from "./pages/Auth";
 import { ToastContainer } from "react-toastify";
+import Cart from "./pages/Cart";
+
 const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
 const REDIRECT_DELAY = 5000; // 1 second
 
@@ -63,6 +65,7 @@ function MainLayout() {
         <Route path="/categories" element={<Categories />} />
         <Route path="/products" element={<Products />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </>
   );

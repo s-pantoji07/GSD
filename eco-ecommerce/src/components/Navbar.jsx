@@ -8,12 +8,12 @@ import {
   Bookmark,
   ShoppingCart,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // ✅ Import useNavigate
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const navigate = useNavigate(); // ✅ Initialize navigate
   return (
     <nav className="bg-white shadow-md p-4 flex justify-between items-center">
       {/* Left Section: Hamburger (Mobile) + Logo + Categories + Search */}
@@ -81,9 +81,10 @@ export default function Navbar() {
         <User size={22} className="hover:text-green-600 cursor-pointer" />
         <Bookmark size={22} className="hover:text-green-600 cursor-pointer" />
         <ShoppingCart
-          size={22}
-          className="hover:text-green-600 cursor-pointer"
-        />
+        size={22}
+        className="hover:text-green-600 cursor-pointer"
+        onClick={() => navigate("/cart")}
+      />
       </div>
 
       {/* Mobile Sidebar Menu (Slide from Left) */}
