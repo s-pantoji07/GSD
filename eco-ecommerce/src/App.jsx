@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Categories from "./pages/Categories";
 import Products from "./pages/Products";
 import Auth from "./pages/Auth";
-
+import { ToastContainer } from "react-toastify";
 const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
 const REDIRECT_DELAY = 5000; // 1 second
 
@@ -56,6 +56,7 @@ function MainLayout() {
 
   return (
     <>
+    
       {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
       <Routes>
         <Route path="/" element={<Layout />} />
@@ -71,6 +72,7 @@ function MainLayout() {
 function App() {
   return (
     <Router>
+      <ToastContainer position="top-right" autoClose={3000} />
       <MainLayout />
     </Router>
   );

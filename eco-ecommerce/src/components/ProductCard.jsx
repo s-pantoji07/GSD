@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FaHeart, FaStar } from "react-icons/fa";
 import "../styles/Productcard.css";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const ProductCard = ({ product }) => {
@@ -12,30 +14,30 @@ const ProductCard = ({ product }) => {
 
   const handleAddToCart = async () => {
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId"); // Ensure userId is retrieved correctly
-
+    const userId = localStorage.getItem("userId");
+  
     if (!token) {
       alert("Please login to add items to the cart.");
       window.location.href = "/auth";
       return;
     }
-
+  
     if (!userId || userId === "undefined") {
       alert("User ID not found. Please log in again.");
       return;
     }
-
+  
     if (!product?._id) {
       alert("Product ID is missing. Please try again later.");
       return;
     }
-
+  
     const payload = {
       userId,
       productId: product._id,
       quantity,
     };
-
+  
     try {
       const response = await fetch("http://127.0.0.1:5000/api/cart/add", {
         method: "POST",
@@ -45,19 +47,20 @@ const ProductCard = ({ product }) => {
         },
         body: JSON.stringify(payload),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
-        alert("Item added to cart successfully!");
+        toast.success("Item added to cart successfully!");
       } else {
-        alert(`Failed to add item: ${data.message || "Unknown error"}`);
+        toast.error(`Failed to add item: ${data.message || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Error adding to cart:", error);
-      alert("An error occurred while adding to the cart.");
+      toast.error("An error occurred while adding to the cart.");
     }
   };
+  
 
   return (
     <div className="product-card">
