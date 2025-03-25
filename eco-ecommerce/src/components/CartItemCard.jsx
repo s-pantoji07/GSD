@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import "../Styles/Cart.css";
 const CartItemCard = ({ item, onDelete, onUpdate }) => {
   const [quantity, setQuantity] = useState(item.quantity);
   const [isUpdated, setIsUpdated] = useState(false);

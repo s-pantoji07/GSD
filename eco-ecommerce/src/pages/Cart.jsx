@@ -77,7 +77,9 @@ const Cart = () => {
   };
 
   if (loading) return <p>Loading cart...</p>;
-  if (cartItems.length === 0) return <p>Your cart is empty.</p>;
+if (cartItems.length === 0) 
+  return <div className="empty-cart">Your cart is empty.</div>;
+
 
   return (
     <div className="cart-container">
