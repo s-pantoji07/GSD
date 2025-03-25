@@ -1,6 +1,6 @@
 const Cart = require("../models/Cart");
 const Product = require("../models/Product");
-
+const mongoose = require("mongoose");
 // Add or update item in cart
 exports.addToCart = async (req, res) => {
   const { userId, productId, quantity } = req.body;
@@ -12,7 +12,7 @@ exports.addToCart = async (req, res) => {
     }
 
     // Check if the product exists
-    const product = await Product.findById(productId);
+    const product = await Product.findById(new mongoose.Types.ObjectId(productId));
     if (!product) {
       return res.status(404).json({ success: false, message: "Product not found" });
     }
