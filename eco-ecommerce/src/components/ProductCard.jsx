@@ -1,27 +1,64 @@
 import React, { useState } from "react";
 import { FaHeart, FaStar } from "react-icons/fa";
-import { addToCart } from "../api/cartApi"; // Import API function
 import "../styles/Productcard.css";
 
-const ProductCard = ({ product, userId }) => {
+
+const ProductCard = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
 
   if (!product) return <p>Loading product...</p>;
 
   const totalPrice = (product?.price_after_discount || 0) * quantity;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId"); // Ensure userId is retrieved correctly
+
     if (!token) {
       alert("Please login to add items to the cart.");
-      navigate("/auth");
+      window.location.href = "/auth";
       return;
     }
-  
-    // Proceed with adding the item to the cart
-    console.log("Item added to cart successfully");
+
+    if (!userId || userId === "undefined") {
+      alert("User ID not found. Please log in again.");
+      return;
+    }
+
+    if (!product?._id) {
+      alert("Product ID is missing. Please try again later.");
+      return;
+    }
+
+    const payload = {
+      userId,
+      productId: product._id,
+      quantity,
+    };
+
+    try {
+      const response = await fetch("http://127.0.0.1:5000/api/cart/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Item added to cart successfully!");
+      } else {
+        alert(`Failed to add item: ${data.message || "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      alert("An error occurred while adding to the cart.");
+    }
   };
-  
+
   return (
     <div className="product-card">
       <div className="image-container">
@@ -48,8 +85,12 @@ const ProductCard = ({ product, userId }) => {
             <option key={num + 1} value={num + 1}>{num + 1}</option>
           ))}
         </select>
-        <button className="add-to-cart" onClick={handleAddToCart}>Add to Cart</button>
-        <button className="wishlist"><FaHeart /></button>
+        <button className="add-to-cart" onClick={handleAddToCart}>
+          Add to Cart
+        </button>
+        <button className="wishlist">
+          <FaHeart />
+        </button>
       </div>
     </div>
   );

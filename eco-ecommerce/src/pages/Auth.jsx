@@ -40,10 +40,11 @@ const Auth = () => {
         });
         successMessage = "Login successful";
         
-        // Store token and timestamp
+        // Store token, timestamp, and userId
         const loginTime = new Date().getTime();
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("loginTime", loginTime);
+        localStorage.setItem("userId", res.data.user.id);
       }
   
       setMessage(successMessage);
@@ -55,6 +56,7 @@ const Auth = () => {
       setMessage(error.response?.data?.message || "Something went wrong");
     }
   };
+  
   
   
 
