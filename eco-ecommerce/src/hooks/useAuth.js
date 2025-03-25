@@ -11,18 +11,25 @@ const useAuth = () => {
 
     if (token && loginTime) {
       const elapsedTime = currentTime - parseInt(loginTime, 10);
-      
-      // If more than 1 hour (3600000ms), log out
+
       if (elapsedTime > 3600000) {
+        // Session expired
+        console.log("Session ended: User logged out due to inactivity.");
         localStorage.removeItem("token");
         localStorage.removeItem("loginTime");
         navigate("/auth");
+      } else {
+        // Valid session
+        console.log("Session has begun: User is logged in.");
       }
     } else {
-      // If user is not logged in, redirect after 15 seconds
-      setTimeout(() => {
+      // Redirect only if there's no token and no login time
+      const timeout = setTimeout(() => {
+        console.log("Session ended: Redirecting to login page.");
         navigate("/auth");
       }, 15000);
+
+      return () => clearTimeout(timeout);
     }
   }, [navigate]);
 };

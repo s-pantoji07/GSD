@@ -30,20 +30,29 @@ function MainLayout() {
 
       if (token && loginTimestamp) {
         const timeElapsed = Date.now() - parseInt(loginTimestamp, 10);
+        console.log("Session active, time elapsed:", timeElapsed);
+
         if (timeElapsed > SESSION_TIMEOUT) {
+          console.log("Session expired: Logging out");
           localStorage.removeItem("token");
           localStorage.removeItem("loginTimestamp");
           navigate("/auth");
+        } else {
+          console.log("User is still logged in. No redirection.");
+          return; // Do nothing if session is still valid
         }
       } else {
-        setTimeout(() => {
+        console.log("No session found. Redirecting in 5 seconds...");
+        const timeout = setTimeout(() => {
           navigate("/auth");
         }, REDIRECT_DELAY);
+
+        return () => clearTimeout(timeout); // Clear timeout if component unmounts
       }
     };
 
     checkSession();
-  }, [navigate]);
+  }, []); // Runs only once when the component mounts
 
   return (
     <>
@@ -57,6 +66,7 @@ function MainLayout() {
     </>
   );
 }
+
 
 function App() {
   return (
