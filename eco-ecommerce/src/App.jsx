@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -7,9 +7,10 @@ import Products from "./pages/Products";
 import Auth from "./pages/Auth";
 import { ToastContainer } from "react-toastify";
 import Cart from "./pages/Cart";
+import PaymentPage from "./components/PaymentPage"; // Importing from the components folder
 
 const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
-const REDIRECT_DELAY = 5000; // 1 second
+const REDIRECT_DELAY = 5000; // 5 seconds
 
 function Layout() {
   return (
@@ -24,6 +25,7 @@ function MainLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const hideNavbarRoutes = ["/auth"];
+  const [cartTotal, setCartTotal] = useState(0); // State for total cart amount
 
   useEffect(() => {
     const checkSession = () => {
@@ -39,9 +41,6 @@ function MainLayout() {
           localStorage.removeItem("token");
           localStorage.removeItem("loginTimestamp");
           navigate("/auth");
-        } else {
-          console.log("User is still logged in. No redirection.");
-          return; // Do nothing if session is still valid
         }
       } else {
         console.log("No session found. Redirecting in 5 seconds...");
@@ -49,16 +48,15 @@ function MainLayout() {
           navigate("/auth");
         }, REDIRECT_DELAY);
 
-        return () => clearTimeout(timeout); // Clear timeout if component unmounts
+        return () => clearTimeout(timeout);
       }
     };
 
     checkSession();
-  }, []); // Runs only once when the component mounts
+  }, []);
 
   return (
     <>
-    
       {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
       <Routes>
         <Route path="/" element={<Layout />} />
@@ -66,11 +64,12 @@ function MainLayout() {
         <Route path="/products" element={<Products />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/payment" element={<PaymentPage cartTotal={cartTotal} />} /> 
+        {/* Pass cartTotal as prop */}
       </Routes>
     </>
   );
 }
-
 
 function App() {
   return (

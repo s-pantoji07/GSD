@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import CartItemCard from "../components/CartItemCard";
 import "../Styles/Cart.css";
 import { removeFromCart } from "../api/cartApi";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [deliveryCharge, setDeliveryCharge] = useState(50); // Default to immediate delivery
+  const [deliveryCharge, setDeliveryCharge] = useState(50); // Default delivery charge
   const userId = localStorage.getItem("userId");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!userId) {
@@ -57,14 +59,16 @@ const Cart = () => {
     try {
       const response = await fetch(`http://localhost:5000/api/cart/update/${userId}/${itemId}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ quantity: newQuantity }),
       });
       const data = await response.json();
       if (data.success) {
-        setCartItems(cartItems.map((item) => (item._id === itemId ? { ...item, quantity: newQuantity } : item)));
+        setCartItems(
+          cartItems.map((item) =>
+            item._id === itemId ? { ...item, quantity: newQuantity } : item
+          )
+        );
       }
     } catch (error) {
       console.error("Error updating item:", error);
@@ -73,6 +77,7 @@ const Cart = () => {
 
   // Calculate total cart value
   const totalCartValue = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalAmount = totalCartValue + deliveryCharge;
 
   // Handle Delivery Charge Selection
   const handleDeliveryChange = (event) => {
@@ -99,18 +104,26 @@ const Cart = () => {
         <h2>Checkout</h2>
         <div className="cart-summary">
           <p>Subtotal: ₹{totalCartValue.toFixed(2)}</p>
-          
+
           {/* Delivery Charge Dropdown */}
-          <label htmlFor="delivery-options">Delivery Option:</label>
-          <select id="delivery-options" value={deliveryCharge} onChange={handleDeliveryChange} className="delivery-dropdown">
+          {/* <label htmlFor="delivery-options">Delivery Option:</label> */}
+          {/* <select
+            id="delivery-options"
+            value={deliveryCharge}
+            onChange={handleDeliveryChange}
+            className="delivery-dropdown"
+          >
             <option value={50}>Immediate Delivery - ₹50</option>
             <option value={20}>After 1 Hour - ₹20</option>
-          </select>
+          </select> */}
 
-          {/* <p>Delivery Charges: ₹{deliveryCharge}</p> */}
-          <h3>Total: ₹{(totalCartValue + deliveryCharge).toFixed(2)}</h3>
+          <h3>Total: ₹{totalAmount.toFixed(2)}</h3>
         </div>
-        <button className="checkout-btn">Proceed to Checkout</button>
+
+        {/* Fixing the undefined variable error */}
+        <button className="checkout-btn" onClick={() => navigate("/payment", { state: { cartTotal: totalAmount } })}>
+          Proceed to Checkout
+        </button>
       </div>
     </div>
   );
