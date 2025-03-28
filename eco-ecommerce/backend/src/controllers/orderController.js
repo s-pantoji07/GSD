@@ -2,18 +2,14 @@ const Order = require("../models/Order");
 
 exports.placeOrder = async (req, res) => {
   try {
-    const { address, paymentMode, totalAmount } = req.body;
-    const userId = req.user.id; // Get user ID from request
+    const { address, paymentMode, totalAmount, deliveryCharge } = req.body;
+    const userId = req.user._id; // Extract from middleware
 
-    if (!userId) {
-      return res.status(401).json({ message: "User not authenticated" });
-    }
-
-    if (!address || !paymentMode || !totalAmount) {
+    if (!userId || !address || !paymentMode || !totalAmount || deliveryCharge === undefined) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const newOrder = new Order({ userId, address, paymentMode, totalAmount });
+    const newOrder = new Order({ userId, address, paymentMode, totalAmount, deliveryCharge });
     await newOrder.save();
 
     res.status(201).json({ message: "Order placed successfully", order: newOrder });
