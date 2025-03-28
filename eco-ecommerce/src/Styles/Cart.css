@@ -1,185 +1,244 @@
-/* Cart Container */
+/* Main Cart Container */
 .cart-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    display: flex;
     max-width: 1200px;
     margin: auto;
+    gap: 20px;
+    padding: 20px;
 }
+
+/* Left Section: Cart Items */
+.cart-items-section {
+    flex: 3; /* 60% width */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Cart Item Card */
+.cart-item-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    gap: 20px; /* Space between image and details */
+}
+
+/* Product Image */
+.item-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Item Details (Placed on the right side of image) */
+.item-details {
+    flex: 1; /* Take up remaining space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Quantity Container */
+.quantity-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-container input {
+    width: 60px;
+    height: 40px;
+    font-size: 16px;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Buttons Container */
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Delete Button */
+.delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #cc0000;
+}
+
+/* Update Button */
+.update-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.update-btn:disabled {
+    background-color: #a5d6a7;
+    cursor: not-allowed;
+}
+
+.update-btn:hover:enabled {
+    background-color: #2e7d32;
+}
+
+/* Right Section: Checkout */
+/* Checkout Section */
+.checkout-section {
+    flex: 2; /* 40% width */
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: sticky;
+    top: 10px; /* Ensures it stays visible as you scroll */
+    height: 350px; /* Reduced height */
+    overflow-y: auto; /* Scroll if content exceeds height */
+}
+
+/* Ensure the checkout section does not overflow */
+.checkout-section::-webkit-scrollbar {
+    width: 6px;
+}
+
+.checkout-section::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+.checkout-section::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Cart Summary */
+.cart-summary {
+    width: 100%;
+    text-align: left;
+    font-size: 18px;
+    color: #444;
+    overflow-y: auto;
+    max-height: 200px; /* Keeps content within a reasonable height */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .checkout-section {
+        position: relative; /* Disable sticky on smaller screens */
+        height: auto;
+        max-height: none;
+        overflow-y: visible;
+    }
+}
+
+
+/* Cart Summary */
+.cart-summary {
+    width: 100%;
+    text-align: left;
+    font-size: 18px;
+    color: #444;
+}
+
+.cart-summary h3 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Checkout Button */
+.checkout-btn {
+    width: 100%;
+    padding: 12px;
+    background: #2a9d8f;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.checkout-btn:hover {
+    background: #1e756d;
+}
+
+/* Empty Cart */
 .empty-cart {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;  /* Takes up most of the screen */
+    height: 80vh;
     font-size: 20px;
     font-weight: bold;
     color: #555;
     text-align: center;
 }
-
-/* Cart Item Card */
-.cart-item-card {
-    background: white;
-    border-radius: 12px;
-    padding: 18px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    text-align: center;
-    position: relative;
-    width: 300px;  /* Fixed width */
-    height: 400px; /* Fixed height */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.cart-item-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
-}
-
-/* Image Styling */
-.item-image {
+.delivery-dropdown {
     width: 100%;
-    height: 180px; /* Ensuring consistent image size */
-    object-fit: cover;
-    border-radius: 10px;
-    transition: opacity 0.3s ease-in-out;
-}
-
-.item-image:hover {
-    opacity: 0.9;
-}
-
-/* Item Details */
-.item-details {
-    flex-grow: 1;
-    text-align: center;
-    padding: 8px 0;
-}
-
-.item-details h3 {
-    font-size: 18px;
-    margin: 10px 0;
-    color: #222;
-    font-weight: bold;
-}
-
-.item-details p {
-    font-size: 14px;
-    color: #444;
-    margin: 5px 0;
-}
-
-/* Quantity Input */
-.quantity-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin: 10px 0;
-}
-
-.quantity-container input {
-    width: 50px;
-    padding: 6px;
-    text-align: center;
+    padding: 8px;
+    margin: 8px 0;
+    font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 14px;
-    outline: none;
-    transition: border 0.2s ease-in-out;
-}
-
-.quantity-container input:focus {
-    border: 1px solid #007bff;
-}
-
-/* Buttons */
-.button-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 5px;
-    width: 100%;
-    padding: 8px 0;
-}
-
-/* Delete Button */
-.delete-btn {
-    background: #e63946;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background 0.2s ease-in-out;
-}
-
-.delete-btn:hover {
-    background: #b71c1c;
-}
-
-/* Update Button */
-.update-btn {
-    background: #2a9d8f;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background 0.2s ease-in-out;
-}
-
-.update-btn:disabled {
-    background: gray;
-    cursor: not-allowed;
-}
-
-.update-btn:hover:enabled {
-    background: #1e756d;
-}
+    background: #fff;
+  }
+  
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .cart-container {
-        justify-content: center;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        flex-direction: column;
+    }
+
+    .cart-items-section {
+        flex: none;
+        width: 100%;
+    }
+
+    .checkout-section {
+        flex: none;
+        width: 100%;
     }
 
     .cart-item-card {
-        width: 280px; /* Slightly smaller for medium screens */
-        height: 390px;
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .item-image {
-        height: 160px;
-    }
-}
-
-@media (max-width: 480px) {
-    .cart-container {
-        grid-template-columns: 1fr;
-    }
-
-    .cart-item-card {
         width: 100%;
-        max-width: 320px;
-        height: 400px;
+        height: auto;
     }
 
-    .button-container {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .delete-btn,
-    .update-btn {
+    .item-details {
         width: 100%;
     }
 }

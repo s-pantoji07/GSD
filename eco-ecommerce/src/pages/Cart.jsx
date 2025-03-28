@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import CartItemCard from "../components/CartItemCard"; // Import component
-import "../Styles/Cart.css"; // Import styles
-import { getCart, updateCartItem, removeFromCart } from "../api/cartApi";
+import CartItemCard from "../components/CartItemCard";
+import "../Styles/Cart.css";
+import { removeFromCart } from "../api/cartApi";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deliveryCharge, setDeliveryCharge] = useState(50); // Default to immediate delivery
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
@@ -34,30 +35,24 @@ const Cart = () => {
     fetchCart();
   }, [userId]);
 
-
-
   const handleDelete = async (itemId) => {
-    const confirmDelete = window.confirm("Are you sure you want to remove this item from the cart?");
+    const confirmDelete = window.confirm("Are you sure you want to remove this item?");
     if (!confirmDelete) return;
 
     try {
-        const data = await removeFromCart(userId, itemId); // Pass itemId instead of productId
-
-        if (data.success) {
-            setCartItems(cartItems.filter((item) => item._id !== itemId)); // Ensure comparison uses item._id
-            alert("Item successfully removed from cart.");
-        } else {
-            alert("Failed to remove item. Please try again.");
-        }
+      const data = await removeFromCart(userId, itemId);
+      if (data.success) {
+        setCartItems(cartItems.filter((item) => item._id !== itemId));
+        alert("Item removed from cart.");
+      } else {
+        alert("Failed to remove item.");
+      }
     } catch (error) {
-        console.error("Error deleting item:", error);
-        alert("An error occurred. Please try again later.");
+      console.error("Error deleting item:", error);
+      alert("An error occurred.");
     }
-};
+  };
 
-  
-
-  
   const handleUpdate = async (itemId, newQuantity) => {
     try {
       const response = await fetch(`http://localhost:5000/api/cart/update/${userId}/${itemId}`, {
@@ -76,16 +71,47 @@ const Cart = () => {
     }
   };
 
-  if (loading) return <p>Loading cart...</p>;
-if (cartItems.length === 0) 
-  return <div className="empty-cart">Your cart is empty.</div>;
+  // Calculate total cart value
+  const totalCartValue = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
+  // Handle Delivery Charge Selection
+  const handleDeliveryChange = (event) => {
+    setDeliveryCharge(Number(event.target.value));
+  };
+
+  if (loading) return <p>Loading cart...</p>;
+  if (cartItems.length === 0) return <div className="empty-cart">Your cart is empty.</div>;
 
   return (
     <div className="cart-container">
-      {cartItems.map((item) => (
-        <CartItemCard key={item._id} item={item} onDelete={handleDelete} onUpdate={handleUpdate} />
-      ))}
+      {/* Left Section: Cart Items */}
+      <div className="cart-items-section">
+        {cartItems.map((item) => (
+          <div className="cart-item-row" key={item._id}>
+            <img src={item.image} alt={item.name} className="cart-item-thumbnail" />
+            <CartItemCard item={item} onDelete={handleDelete} onUpdate={handleUpdate} />
+          </div>
+        ))}
+      </div>
+
+      {/* Right Section: Checkout */}
+      <div className="checkout-section">
+        <h2>Checkout</h2>
+        <div className="cart-summary">
+          <p>Subtotal: ₹{totalCartValue.toFixed(2)}</p>
+          
+          {/* Delivery Charge Dropdown */}
+          <label htmlFor="delivery-options">Delivery Option:</label>
+          <select id="delivery-options" value={deliveryCharge} onChange={handleDeliveryChange} className="delivery-dropdown">
+            <option value={50}>Immediate Delivery - ₹50</option>
+            <option value={20}>After 1 Hour - ₹20</option>
+          </select>
+
+          {/* <p>Delivery Charges: ₹{deliveryCharge}</p> */}
+          <h3>Total: ₹{(totalCartValue + deliveryCharge).toFixed(2)}</h3>
+        </div>
+        <button className="checkout-btn">Proceed to Checkout</button>
+      </div>
     </div>
   );
 };

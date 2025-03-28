@@ -15,7 +15,7 @@ const CartItemCard = ({ item, onDelete, onUpdate }) => {
         <h3>{item.productId.name}</h3>
         <p>Final Cost: ₹{item.productId.price_after_discount * quantity}</p>
         <div className="quantity-container">
-          <label>Quantity:</label>
+          <label>Quantity:  </label>
           <input
             type="number"
             value={quantity}
