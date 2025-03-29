@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { placeOrder } from "../api/orderApi";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../Styles/paymentPage.css";
 
 const PaymentPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const cartTotal = location.state?.cartTotal || 0;
 
   const [address, setAddress] = useState("");
@@ -17,13 +20,13 @@ const PaymentPage = () => {
 
   const handleOrder = async () => {
     if (!address.trim()) {
-      alert("Please enter your delivery address.");
+      toast.error("Please enter your delivery address.");
       return;
     }
 
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("User not logged in. Please log in first.");
+      toast.error("User not logged in. Please log in first.");
       return;
     }
 
@@ -38,10 +41,15 @@ const PaymentPage = () => {
 
     try {
       const response = await placeOrder(orderData);
-      alert(response.message || "Order placed successfully!");
+      toast.success(response.message || "Order placed successfully!");
+
+      // Redirect to home page after 3 seconds
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
     } catch (error) {
       console.error("Order API Error:", error);
-      alert(error.message || "Failed to place order. Try again!");
+      toast.error(error.message || "Failed to place order. Try again!");
     }
   };
 
