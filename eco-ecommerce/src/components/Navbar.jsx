@@ -25,7 +25,7 @@ export default function Navbar() {
 
         {/* Logo */}
         <h1 className="text-2xl font-bold text-black flex items-center">
-          <span className="text-green-600">🌱</span> Organic
+          <span className="text-green-600">🌱</span> Organio
         </h1>
 
         {/* Categories Dropdown (Hidden in Mobile) */}

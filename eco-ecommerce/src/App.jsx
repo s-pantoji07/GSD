@@ -10,6 +10,7 @@ import Cart from "./pages/Cart";
 import PaymentPage from "./components/PaymentPage"; // Importing from the components folder
 import MyOrders from "./components/myorder";
 import UserProfile from "./components/Profile";
+import Footer from "./components/Footer";
 
 const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
 const REDIRECT_DELAY = 5000; // 5 seconds
@@ -72,6 +73,7 @@ function MainLayout() {
         
         {/* Pass cartTotal as prop */}
       </Routes>
+      <Footer />
     </>
   );
 }

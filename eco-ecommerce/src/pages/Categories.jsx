@@ -31,13 +31,15 @@ const Categories = () => {
   const handleCategoryClick = (category) => {
     navigate(`/products?category=${category.name}`);
   };
-
+  const handleNavigate = () => {
+    navigate('/products'); // Navigate to products page when clicked
+  };
   return (
     <div className="categories-container">
       <div className="categories-header">
         <h2>Category</h2>
         <div className="button-container">
-          <button className="view-all">View All</button>
+        <button className="view-all" onClick={handleNavigate}>View All</button>
           <button className="scroll-btn left" onClick={scrollLeft}>{"<"}</button>
           <button className="scroll-btn right" onClick={scrollRight}>{">"}</button>
         </div>
