@@ -65,15 +65,18 @@ export default function Navbar() {
 
       {/* Right Section: Navigation + Icons */}
       <div className="hidden lg:flex items-center space-x-6 text-black">
-        <a href="/" className="font-semibold hover:text-green-600">
+        <button
+          onClick={() => navigate("/")}
+          className="font-semibold hover:text-green-600"
+        >
           HOME
-        </a>
+        </button>
         <div className="relative">
           <a
             href="#"
             className="font-semibold hover:text-green-600 flex items-center"
           >
-            About Us  
+            About Us
           </a>
         </div>
 
@@ -81,10 +84,10 @@ export default function Navbar() {
         <User size={22} className="hover:text-green-600 cursor-pointer" />
         <Bookmark size={22} className="hover:text-green-600 cursor-pointer" />
         <ShoppingCart
-        size={22}
-        className="hover:text-green-600 cursor-pointer"
-        onClick={() => navigate("/cart")}
-      />
+          size={22}
+          className="hover:text-green-600 cursor-pointer"
+          onClick={() => navigate("/cart")}
+        />
       </div>
 
       {/* Mobile Sidebar Menu (Slide from Left) */}
