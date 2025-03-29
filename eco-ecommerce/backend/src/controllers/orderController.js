@@ -17,3 +17,33 @@ exports.placeOrder = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+exports.getUserOrders = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const orders = await Order.find({ userId: userId });
+
+    if (!orders) {
+      return res.status(404).json({ success: false, message: "No orders found" });
+    }
+
+    res.status(200).json({ success: true, orders });
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+
+exports.getOrderById = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json(order);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};

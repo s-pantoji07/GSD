@@ -72,12 +72,12 @@ export default function Navbar() {
           HOME
         </button>
         <div className="relative">
-          <a
-            href="#"
-            className="font-semibold hover:text-green-600 flex items-center"
-          >
-            About Us
-          </a>
+        <button
+          onClick={() => navigate("/myorders")}
+          className="font-semibold hover:text-green-600"
+        >
+          My Orders
+        </button>
         </div>
 
         {/* Icons */}
