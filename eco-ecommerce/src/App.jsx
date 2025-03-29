@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import Cart from "./pages/Cart";
 import PaymentPage from "./components/PaymentPage"; // Importing from the components folder
 import MyOrders from "./components/myorder";
+import UserProfile from "./components/Profile";
 
 const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
 const REDIRECT_DELAY = 5000; // 5 seconds
@@ -67,7 +68,7 @@ function MainLayout() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/payment" element={<PaymentPage cartTotal={cartTotal} />} /> 
         <Route path="/myorders" element={<MyOrders />} /> {/* Add MyOrders route */}
-
+        <Route path="/profile" element={<UserProfile />} />
         
         {/* Pass cartTotal as prop */}
       </Routes>

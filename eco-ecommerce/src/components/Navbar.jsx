@@ -72,16 +72,20 @@ export default function Navbar() {
           HOME
         </button>
         <div className="relative">
-        <button
-          onClick={() => navigate("/myorders")}
-          className="font-semibold hover:text-green-600"
-        >
-          My Orders
-        </button>
+          <button
+            onClick={() => navigate("/myorders")}
+            className="font-semibold hover:text-green-600"
+          >
+            My Orders
+          </button>
         </div>
 
         {/* Icons */}
-        <User size={22} className="hover:text-green-600 cursor-pointer" />
+        <User
+          size={22}
+          className="hover:text-green-600 cursor-pointer"
+          onClick={() => navigate("/profile")}
+        />
         <Bookmark size={22} className="hover:text-green-600 cursor-pointer" />
         <ShoppingCart
           size={22}
