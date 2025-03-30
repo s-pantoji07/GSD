@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CartItemCard from "../components/CartItemCard";
+import RecipeRecommendations from "../components/recipeRecommendations"; // Import the new component
 import "../Styles/Cart.css";
 import { removeFromCart } from "../api/cartApi";
 import { useNavigate } from "react-router-dom";
@@ -97,6 +98,12 @@ const Cart = () => {
             <CartItemCard item={item} onDelete={handleDelete} onUpdate={handleUpdate} />
           </div>
         ))}
+        
+        {/* Recipe Recommendations Section */}
+        <div className="recipe-section">
+          <h3>What can I cook with these ingredients?</h3>
+          <RecipeRecommendations userId={userId} />
+        </div>
       </div>
 
       {/* Right Section: Checkout */}
