@@ -11,6 +11,7 @@ import PaymentPage from "./components/PaymentPage"; // Importing from the compon
 import MyOrders from "./components/myorder";
 import UserProfile from "./components/Profile";
 import Footer from "./components/Footer";
+import BestProducts from "./pages/BestProducts";
 
 const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
 const REDIRECT_DELAY = 5000; // 5 seconds
@@ -20,6 +21,7 @@ function Layout() {
     <div>
       <Home />
       <Categories />
+      <BestProducts />
     </div>
   );
 }
@@ -70,7 +72,7 @@ function MainLayout() {
         <Route path="/payment" element={<PaymentPage cartTotal={cartTotal} />} /> 
         <Route path="/myorders" element={<MyOrders />} /> {/* Add MyOrders route */}
         <Route path="/profile" element={<UserProfile />} />
-        
+        {/* <Route path="/best-products" element={<BestProducts />} /> Add BestProducts route */}
         {/* Pass cartTotal as prop */}
       </Routes>
       <Footer />
