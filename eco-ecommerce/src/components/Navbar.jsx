@@ -58,7 +58,7 @@ export default function Navbar() {
           <input
             type="text"
             placeholder="Search for more than 20,000 products..."
-            className="w-full px-2 text-gray-800 bg-transparent outline-none"
+            className="w-full px-2 text-gray-800 bg-transparent outline-none focus:outline-none"
           />
         </div>
       </div>
