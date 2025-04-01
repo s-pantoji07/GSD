@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [deliveryCharge, setDeliveryCharge] = useState(50); // Default delivery charge
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
 
@@ -78,12 +77,7 @@ const Cart = () => {
 
   // Calculate total cart value
   const totalCartValue = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-  const totalAmount = totalCartValue + deliveryCharge;
-
-  // Handle Delivery Charge Selection
-  const handleDeliveryChange = (event) => {
-    setDeliveryCharge(Number(event.target.value));
-  };
+  const totalAmount = totalCartValue;
 
   if (loading) return <p>Loading cart...</p>;
   if (cartItems.length === 0) return <div className="empty-cart">Your cart is empty.</div>;
@@ -112,22 +106,9 @@ const Cart = () => {
         <div className="cart-summary">
           <p>Subtotal: ₹{totalCartValue.toFixed(2)}</p>
 
-          {/* Delivery Charge Dropdown */}
-          {/* <label htmlFor="delivery-options">Delivery Option:</label> */}
-          {/* <select
-            id="delivery-options"
-            value={deliveryCharge}
-            onChange={handleDeliveryChange}
-            className="delivery-dropdown"
-          >
-            <option value={50}>Immediate Delivery - ₹50</option>
-            <option value={20}>After 1 Hour - ₹20</option>
-          </select> */}
-
-          <h3>Total: ₹{totalAmount.toFixed(2)}</h3>
+          <h3>Total: ₹{totalCartValue.toFixed(2)}</h3>
         </div>
 
-        {/* Fixing the undefined variable error */}
         <button className="checkout-btn" onClick={() => navigate("/payment", { state: { cartTotal: totalAmount } })}>
           Proceed to Checkout
         </button>
