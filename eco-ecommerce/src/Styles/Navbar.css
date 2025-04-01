@@ -35,37 +35,39 @@
     border-radius: 20px;  /* Rounded corners */
     width: auto;
     max-width: 100%;
-  }
-  
-  .search-container form {
+}
+
+.search-container form {
     display: flex;
     flex-direction: row;  /* Align items in a row */
     gap: 20px;  /* Adds a 20px gap between the icon and the input */
     width: 100%;  /* Ensure the form takes full width */
     align-items: center;  /* Vertically align the items in the center */
-  }
-  
-  .search-btn {
+}
+
+.search-btn {
     background: none;
     border: none;
     cursor: pointer;
     padding: 15px;
     padding-top: center;  /* Center the icon vertically */
-  }
-  
-  .input-search {
-    border: none;
+}
+
+.input-search {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none; /* Removed border */
     background: none;
-    padding: 5px 10px;  /* Adds padding to the input */
     outline: none;
-    width: 100%;  /* Makes the input take up the remaining space */
     font-size: 16px;  /* Adjust font size */
     color: #333;  /* Dark text color */
-  }
-  
-  .input-search::placeholder {
+}
+
+.input-search::placeholder {
     color: #888;  /* Lighter grey placeholder text */
-  }
+}
+
   
   
 

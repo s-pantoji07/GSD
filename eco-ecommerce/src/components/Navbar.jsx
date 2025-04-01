@@ -67,25 +67,26 @@ export default function Navbar() {
         {/* Search Bar */}
         {/* Search Bar */}
         <div className="flex flex-grow items-center bg-gray-100 rounded-full px-5 py-2 max-w-md">
-          <form onSubmit={handleSearchSubmit} className="flex w-full flex-row">
-            <Search className="text-gray-500" size={25} />
-            <input
-              type="text"
-              placeholder="Search for more than 20,000 products..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-              className="w-full px-2 text-gray-800 bg-transparent outline-none focus:outline-none"
-            />
-            {searchTerm && (
-              <button
-                type="button"
-                onClick={() => handleSearchChange({ target: { value: "" } })}
-                className="ml-2 text-gray-500"
-              >
-                &#10005; {/* This is the "×" character for the cross */}
-              </button>
-            )}
-          </form>
+        <form onSubmit={handleSearchSubmit} className="flex w-full flex-row items-center">
+  <Search className="text-gray-500 self-center" size={25} />
+  <input
+    type="text"
+    placeholder="Search for more than 20,000 products..."
+    value={searchTerm}
+    onChange={handleSearchChange}
+    className="w-full px-2 text-gray-800 bg-transparent outline-none border-none"
+  />
+  {searchTerm && (
+    <button
+      type="button"
+      onClick={() => handleSearchChange({ target: { value: "" } })}
+      className="ml-2 text-gray-500 self-center"
+    >
+      &#10005;
+    </button>
+  )}
+</form>
+
         </div>
       </div>
 
