@@ -27,6 +27,8 @@ router.get("/", async (req, res) => {
       .skip(skip)
       .limit(parseInt(limit));
 
+    console.log(`Fetched products for page ${page}:`, products.length); // Debugging log
+    
     res.json(products);
   } catch (error) {
     console.error(error);

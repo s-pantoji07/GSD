@@ -50,6 +50,7 @@ const Products = () => {
     
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore && !loading && !endReached) {
+        console.log("End of list reached, loading more products...");
         setPageNumber(prevPageNumber => prevPageNumber + 1);
       }
     }, { threshold: 0.1, rootMargin: '100px' });
@@ -95,17 +96,13 @@ const Products = () => {
           }
           
           setProducts(prevProducts => {
-            if (pageNumber === 1) return newProducts;
-            
-            const existingIds = new Set(prevProducts.map(p => p.id));
-            const filteredNewProducts = newProducts.filter(p => !existingIds.has(p.id));
-            
-            if (filteredNewProducts.length === 0 && pageNumber > 1) {
+            console.log(`New products length: ${newProducts.length}`);
+            console.log(`Has more: ${hasMore}`);
+            if (newProducts.length === 0 || newProducts.length < ITEMS_PER_PAGE) {
               setHasMore(false);
               setEndReached(true);
             }
-            
-            return [...prevProducts, ...filteredNewProducts];
+            return [...prevProducts, ...newProducts];
           });
         }
       } catch (err) {
