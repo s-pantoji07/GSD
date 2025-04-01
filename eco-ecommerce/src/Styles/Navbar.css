@@ -27,33 +27,55 @@
     color: #000;
   }
   
-  /* Search Bar */
   .search-container {
     display: flex;
     align-items: center;
-    background: #f3f3f3;
+    background: #f3f3f3;  /* Light grey background */
     padding: 5px;
-    border-radius: 20px;
-    border:none;
+    border-radius: 20px;  /* Rounded corners */
+    width: auto;
+    max-width: 100%;
   }
-  .input-search {
-    border: none;
-    background: none;
-    padding: 5px;
-    outline: none;
-    width: 200px;
-  }
-  .category-select {
-    border: none;
-    background: none;
-    padding: 5px;
+  
+  .search-container form {
+    display: flex;
+    flex-direction: row;  /* Align items in a row */
+    gap: 20px;  /* Adds a 20px gap between the icon and the input */
+    width: 100%;  /* Ensure the form takes full width */
+    align-items: center;  /* Vertically align the items in the center */
   }
   
   .search-btn {
     background: none;
     border: none;
     cursor: pointer;
+    padding: 15px;
+    padding-top: center;  /* Center the icon vertically */
   }
+  
+  .input-search {
+    border: none;
+    background: none;
+    padding: 5px 10px;  /* Adds padding to the input */
+    outline: none;
+    width: 100%;  /* Makes the input take up the remaining space */
+    font-size: 16px;  /* Adjust font size */
+    color: #333;  /* Dark text color */
+  }
+  
+  .input-search::placeholder {
+    color: #888;  /* Lighter grey placeholder text */
+  }
+  
+  
+
+  .category-select {
+    border: none;
+    background: none;
+    padding: 5px;
+  }
+  
+ 
   
   /* Sidebar */
   .sidebar {

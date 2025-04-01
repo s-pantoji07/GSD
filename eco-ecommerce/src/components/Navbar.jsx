@@ -13,7 +13,19 @@ import { Link, useNavigate } from "react-router-dom"; // ✅ Import useNavigate
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(""); // New state for search term
   const navigate = useNavigate(); // ✅ Initialize navigate
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    // Navigate to products page with search query
+    navigate(`/products?search=${searchTerm}`);
+  };
+
   return (
     <nav className="bg-white shadow-md p-4 flex justify-between items-center">
       {/* Left Section: Hamburger (Mobile) + Logo + Categories + Search */}
@@ -53,13 +65,27 @@ export default function Navbar() {
         </div>
 
         {/* Search Bar */}
-        <div className="flex flex-grow items-center bg-gray-100 rounded-full px-3 py-2 max-w-md">
-          <Search className="text-gray-500" size={20} />
-          <input
-            type="text"
-            placeholder="Search for more than 20,000 products..."
-            className="w-full px-2 text-gray-800 bg-transparent outline-none focus:outline-none"
-          />
+        {/* Search Bar */}
+        <div className="flex flex-grow items-center bg-gray-100 rounded-full px-5 py-2 max-w-md">
+          <form onSubmit={handleSearchSubmit} className="flex w-full flex-row">
+            <Search className="text-gray-500" size={25} />
+            <input
+              type="text"
+              placeholder="Search for more than 20,000 products..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="w-full px-2 text-gray-800 bg-transparent outline-none focus:outline-none"
+            />
+            {searchTerm && (
+              <button
+                type="button"
+                onClick={() => handleSearchChange({ target: { value: "" } })}
+                className="ml-2 text-gray-500"
+              >
+                &#10005; {/* This is the "×" character for the cross */}
+              </button>
+            )}
+          </form>
         </div>
       </div>
 

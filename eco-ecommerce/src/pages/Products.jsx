@@ -20,11 +20,12 @@ const Products = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const category = queryParams.get("category");
-  
+  const searchTerm = queryParams.get("search"); // Get search term from query
+
   // Items per page
   const ITEMS_PER_PAGE = 8;
 
-  // Reset everything when category changes
+  // Reset everything when category or search term changes
   useEffect(() => {
     setProducts([]);
     setPageNumber(1);
@@ -34,105 +35,71 @@ const Products = () => {
     setInitialLoading(true);
     setError(null);
     
-    // Also disconnect any existing observer
     if (observer.current) {
       observer.current.disconnect();
     }
-  }, [category]);
+  }, [category, searchTerm]);
 
   // Intersection observer setup
   const observer = useRef();
   
   const lastProductElementRef = useCallback(node => {
-    // If we're loading, already reached the end, or have no more products, don't observe
     if (loading || endReached || !hasMore) return;
-    
-    // Disconnect the previous observer
+
     if (observer.current) observer.current.disconnect();
     
     observer.current = new IntersectionObserver(entries => {
-      // Only trigger if element is intersecting, we have more products, and we're not already loading
       if (entries[0].isIntersecting && hasMore && !loading && !endReached) {
         setPageNumber(prevPageNumber => prevPageNumber + 1);
       }
-    }, { 
-      threshold: 0.1,  // Trigger when at least 10% of the element is visible
-      rootMargin: '100px' // Start loading before element is visible
-    });
+    }, { threshold: 0.1, rootMargin: '100px' });
     
     if (node) observer.current.observe(node);
   }, [loading, hasMore, endReached]);
 
-  // Fetch products
+  // Fetch products based on category or search term
   useEffect(() => {
-    // If we already know we've reached the end, don't fetch
-    if (endReached) {
-      return;
-    }
-    
-    // Clean up function flag
+    if (endReached) return;
+
     let isActive = true;
     const controller = new AbortController();
     
     const fetchProducts = async () => {
-      // Set appropriate loading state
-      if (pageNumber === 1) {
-        setInitialLoading(true);
-      } else {
-        setLoading(true);
-      }
+      if (pageNumber === 1) setInitialLoading(true);
+      else setLoading(true);
       
       try {
-        // Construct URL with proper query parameters
         const params = new URLSearchParams();
         
-        if (category) {
-          params.append("category", category);
-        }
+        if (category) params.append("category", category);
+        if (searchTerm) params.append("search", searchTerm); // Add search term to the request
         
         params.append("page", pageNumber.toString());
         params.append("limit", ITEMS_PER_PAGE.toString());
         
-        // Make the fetch request
-        const response = await fetch(
-          `${API_BASE_URL}?${params.toString()}`,
-          { signal: controller.signal }
-        );
+        const response = await fetch(`${API_BASE_URL}?${params.toString()}`, {
+          signal: controller.signal
+        });
         
-        if (!response.ok) {
-          throw new Error(`Server error: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Server error: ${response.status}`);
         
         const newProducts = await response.json();
         
-        // Only update state if component is still mounted
         if (isActive) {
-          // Determine if we've reached the end of available products
           const reachedEnd = newProducts.length === 0 || newProducts.length < ITEMS_PER_PAGE;
           
           if (reachedEnd) {
             setHasMore(false);
             setEndReached(true);
-            
-            // Immediately remove observer to prevent any further loading
-            if (observer.current) {
-              observer.current.disconnect();
-              observer.current = null;
-            }
+            if (observer.current) observer.current.disconnect();
           }
           
-          // Update products list
           setProducts(prevProducts => {
-            // For first page, replace entirely
-            if (pageNumber === 1) {
-              return newProducts;
-            }
+            if (pageNumber === 1) return newProducts;
             
-            // For subsequent pages, filter duplicates and append
             const existingIds = new Set(prevProducts.map(p => p.id));
             const filteredNewProducts = newProducts.filter(p => !existingIds.has(p.id));
             
-            // If no new products were added, we've reached the end
             if (filteredNewProducts.length === 0 && pageNumber > 1) {
               setHasMore(false);
               setEndReached(true);
@@ -158,71 +125,34 @@ const Products = () => {
     
     fetchProducts();
     
-    // Cleanup
     return () => {
       isActive = false;
       controller.abort();
-      if (observer.current) {
-        observer.current.disconnect();
-      }
+      if (observer.current) observer.current.disconnect();
     };
-  }, [category, pageNumber, endReached]);
+  }, [category, searchTerm, pageNumber, endReached]);
 
   return (
     <div className="products-container">
-      <h2>{category ? `Products in ${category}` : "All Products"}</h2>
+      <h2>{category ? `Products in ${category}` : searchTerm ? `Search results for "${searchTerm}"` : "All Products"}</h2>
       
-      {/* Initial loading state for first page */}
-      {initialLoading && (
-        <div className="initial-loading">
-          <p>Loading products...</p>
-        </div>
-      )}
+      {initialLoading && <p>Loading products...</p>}
       
-      {/* Products list */}
-      {!initialLoading && (
-        <div className="products-list">
-          {products.length > 0 ? (
-            products.map((product, index) => (
-              <div 
-                key={product.id}
-                // Only add observer ref to last item if we haven't reached the end
-                ref={products.length === index + 1 && !endReached ? lastProductElementRef : null}
-                className="product-wrapper"
-              >
-                <Suspense fallback={<div className="product-placeholder">Loading...</div>}>
-                  <ProductCard product={product} />
-                </Suspense>
-              </div>
-            ))
-          ) : (
-            <div className="no-products">
-              <p>No products found in this category.</p>
-            </div>
-          )}
-        </div>
-      )}
+      <div className="products-list">
+        {products.length > 0 ? products.map((product, index) => (
+          <div key={product.id} ref={products.length === index + 1 && !endReached ? lastProductElementRef : null} className="product-wrapper">
+            <Suspense fallback={<div>Loading...</div>}>
+              <ProductCard product={product} />
+            </Suspense>
+          </div>
+        )) : <p>No products found.</p>}
+      </div>
       
-      {/* Loading indicator - only show if NOT at end */}
-      {!initialLoading && loading && !endReached && (
-        <div className="bottom-loading">
-          <p>Loading more products...</p>
-        </div>
-      )}
+      {loading && !endReached && <p>Loading more products...</p>}
       
-      {/* End of category message */}
-      {!initialLoading && !loading && endReached && products.length > 0 && (
-        <div className="end-message">
-          <p>All products in this category have been loaded</p>
-        </div>
-      )}
+      {!loading && endReached && products.length > 0 && <p>All products loaded.</p>}
       
-      {/* Error message */}
-      {error && (
-        <div className="error-message">
-          <p>{error}</p>
-        </div>
-      )}
+      {error && <p>{error}</p>}
     </div>
   );
 };
