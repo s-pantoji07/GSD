@@ -1,11 +1,13 @@
-import { useRef } from "react";
+import { useRef, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth"; // Import authentication hook
+import useAuth from "../hooks/useAuth";
 import "../Styles/Home.css";
 
-const Home = () => {
-  useAuth(); // Check session status
+// Lazy load categories component
+const Categories = lazy(() => import("../pages/Categories"));
 
+const Home = () => {
+  useAuth();
   const categoriesRef = useRef(null);
   const navigate = useNavigate();
 
@@ -21,7 +23,12 @@ const Home = () => {
     navigate("/auth");
   };
 
-  // <button onClick={handleLogout}>Logout</button>
+  // Stats data extracted to make code more maintainable
+  const stats = [
+    { value: "14k+", label: "PRODUCT VARIETIES" },
+    { value: "50k+", label: "HAPPY CUSTOMERS" },
+    { value: "10+", label: "STORE LOCATIONS" },
+  ];
 
   return (
     <div className="home-container">
@@ -42,29 +49,22 @@ const Home = () => {
             </button>
           </div>
           <div className="stats">
-            <div>
-              <strong>14k+</strong>
-              <br />
-              PRODUCT VARIETIES
-            </div>
-            <div>
-              <strong>50k+</strong>
-              <br />
-              HAPPY CUSTOMERS
-            </div>
-            <div>
-              <strong>10+</strong>
-              <br />
-              STORE LOCATIONS
-            </div>
+            {stats.map((item, index) => (
+              <div key={index}>
+                <strong>{item.value}</strong>
+                <br />
+                {item.label}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Categories Section */}
+      {/* Categories Section - Lazy loaded */}
       <section ref={categoriesRef} className="categories">
-        {/* <h2>Shop by Categories</h2> */}
-        {/* Your categories content here */}
+        <Suspense fallback={<div>Loading categories...</div>}>
+          <Categories />
+        </Suspense>
       </section>
     </div>
   );

@@ -20,7 +20,7 @@ function Layout() {
   return (
     <div>
       <Home />
-      <Categories />
+      {/* <Categories /> */}
       <BestProducts />
     </div>
   );
