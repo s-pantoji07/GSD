@@ -5,11 +5,12 @@
     margin: auto;
     gap: 20px;
     padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
 }
 
 /* Left Section: Cart Items */
 .cart-items-section {
-    flex: 3; /* 60% width */
+    flex: 3;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -20,78 +21,104 @@
     display: flex;
     align-items: center;
     background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    gap: 20px; /* Space between image and details */
+    padding: 20px; /* Increased padding */
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Stronger shadow */
+    gap: 25px; /* Increased gap */
 }
 
 /* Product Image */
 .item-image {
-    width: 150px;
-    height: 150px;
+    width: 180px; /* Slightly larger image */
+    height: 180px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
 /* Item Details (Placed on the right side of image) */
 .item-details {
-    flex: 1; /* Take up remaining space */
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.item-details h3 {
+    font-size: 1.5em; /* Larger heading */
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.item-details p {
+    font-size: 1.1em; /* Slightly larger paragraph */
+    color: #555;
+    margin-bottom: 10px;
 }
 
 /* Quantity Container */
 .quantity-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.quantity-container label {
+    font-size: 1em;
+    font-weight: 600;
+    color: #444;
 }
 
 .quantity-container input {
-    width: 60px;
-    height: 40px;
-    font-size: 16px;
+    width: 70px;
+    height: 45px;
+    font-size: 1.1em;
     text-align: center;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    appearance: textfield; /* Remove arrows in number input for some browsers */
+}
+
+.quantity-container input::-webkit-outer-spin-button,
+.quantity-container input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Buttons Container */
 .button-container {
     display: flex;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 12px;
+    margin-top: 15px;
 }
 
 /* Delete Button */
 .delete-btn {
-    background-color: #ff4d4d;
+    background-color: #e57373; /* Lighter red */
     color: white;
     border: none;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: 600;
+    border-radius: 6px;
     cursor: pointer;
     transition: background 0.3s ease;
 }
 
 .delete-btn:hover {
-    background-color: #cc0000;
+    background-color: #d32f2f; /* Darker red on hover */
 }
 
 /* Update Button */
 .update-btn {
-    background-color: #4CAF50;
+    background-color: #81c784; /* Lighter green */
     color: white;
     border: none;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: 600;
+    border-radius: 6px;
     cursor: pointer;
     transition: background 0.3s ease;
 }
@@ -102,35 +129,35 @@
 }
 
 .update-btn:hover:enabled {
-    background-color: #2e7d32;
+    background-color: #4caf50; /* Darker green on hover */
 }
 
 /* Right Section: Checkout */
 /* Checkout Section */
 .checkout-section {
-    flex: 2; /* 40% width */
+    flex: 2;
     background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
     position: sticky;
-    top: 10px; /* Ensures it stays visible as you scroll */
-    height: 350px; /* Reduced height */
-    overflow-y: auto; /* Scroll if content exceeds height */
+    top: 20px;
+    height: 400px;
+    overflow-y: auto;
 }
 
-/* Ensure the checkout section does not overflow */
+/* Scrollbar styling */
 .checkout-section::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 .checkout-section::-webkit-scrollbar-thumb {
     background-color: #ccc;
-    border-radius: 10px;
+    border-radius: 12px;
 }
 
 .checkout-section::-webkit-scrollbar-track {
@@ -141,45 +168,25 @@
 .cart-summary {
     width: 100%;
     text-align: left;
-    font-size: 18px;
-    color: #444;
-    overflow-y: auto;
-    max-height: 200px; /* Keeps content within a reasonable height */
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .checkout-section {
-        position: relative; /* Disable sticky on smaller screens */
-        height: auto;
-        max-height: none;
-        overflow-y: visible;
-    }
-}
-
-
-/* Cart Summary */
-.cart-summary {
-    width: 100%;
-    text-align: left;
-    font-size: 18px;
+    font-size: 1.1em;
     color: #444;
 }
 
 .cart-summary h3 {
-    font-size: 22px;
-    font-weight: bold;
-    margin-top: 10px;
+    font-size: 1.4em;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
 }
 
 /* Checkout Button */
 .checkout-btn {
     width: 100%;
-    padding: 12px;
+    padding: 15px;
     background: #2a9d8f;
     color: white;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 1.1em;
+    font-weight: 600;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -196,21 +203,21 @@
     justify-content: center;
     align-items: center;
     height: 80vh;
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 1.2em;
+    font-weight: 600;
     color: #555;
     text-align: center;
 }
+
 .delivery-dropdown {
     width: 100%;
-    padding: 8px;
-    margin: 8px 0;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background: #fff;
-  }
-  
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #f9f9f9;
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -218,12 +225,7 @@
         flex-direction: column;
     }
 
-    .cart-items-section {
-        flex: none;
-        width: 100%;
-    }
-
-    .checkout-section {
+    .cart-items-section, .checkout-section {
         flex: none;
         width: 100%;
     }

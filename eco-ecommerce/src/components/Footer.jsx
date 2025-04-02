@@ -41,7 +41,7 @@ const Footer = () => {
       </div>
       
       <div className="footer-bottom">
-        <p>© 2020 Copyright: MDBootstrap.com</p>
+        <p>© 2025 Copyright: Organio.com</p>
         <div className="social-icons">
           <a href="#"><i className="fa fa-facebook-f"></i></a>
           <a href="#"><i className="fa fa-twitter"></i></a>
