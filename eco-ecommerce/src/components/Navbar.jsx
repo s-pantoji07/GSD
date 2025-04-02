@@ -8,13 +8,13 @@ import {
   Bookmark,
   ShoppingCart,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom"; // ✅ Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(""); // New state for search term
-  const navigate = useNavigate(); // ✅ Initialize navigate
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -22,29 +22,24 @@ export default function Navbar() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    // Navigate to products page with search query
     navigate(`/products?search=${searchTerm}`);
   };
 
   return (
-    <nav className="bg-white shadow-md p-4 flex justify-between items-center">
-      {/* Left Section: Hamburger (Mobile) + Logo + Categories + Search */}
+    <nav className="bg-neutralLight shadow-md p-4 flex justify-between items-center">
       <div className="flex items-center flex-grow space-x-4">
-        {/* Hamburger Menu Button (Mobile) */}
-        <button onClick={() => setMenuOpen(true)} className="lg p-2">
-          <Menu size={24} />
+        <button onClick={() => setMenuOpen(true)} className="lg:p-2">
+          <Menu size={24} className="text-darkGreen" />
         </button>
 
-        {/* Logo */}
         <h1 className="text-2xl font-bold text-black flex items-center">
-          <span className="text-green-600">🌱</span> Organio
+          <span className="text-primaryGreen">🌱</span> Organio
         </h1>
 
-        {/* Categories Dropdown (Hidden in Mobile) */}
         <div className="relative hidden lg:block">
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex items-center space-x-2 bg-gray-100 text-gray-700 px-3 py-2 rounded-full"
+            className="flex items-center space-x-2 bg-neutralMedium text-neutralDark px-3 py-2 rounded-full"
           >
             <span>All Categories</span>
             <ChevronDown size={16} />
@@ -64,9 +59,7 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Search Bar */}
-        {/* Search Bar */}
-        <div className="flex flex-grow items-center bg-gray-100 rounded-full px-5 py-2 max-w-md">
+        <div className="flex flex-grow items-center bg-neutralMedium rounded-full px-5 py-2 max-w-md">
           <form
             onSubmit={handleSearchSubmit}
             className="flex w-full flex-row items-center"
@@ -77,7 +70,7 @@ export default function Navbar() {
               placeholder="Search for more than 20,000 products..."
               value={searchTerm}
               onChange={handleSearchChange}
-              className="w-full px-2 text-gray-800 bg-transparent outline-none border-none"
+              className="w-full px-2 text-neutralDark bg-transparent outline-none border-none"
             />
             {searchTerm && (
               <button
@@ -92,53 +85,48 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Right Section: Navigation + Icons */}
       <div className="hidden lg:flex items-center space-x-6 text-black">
         <button
           onClick={() => navigate("/")}
-          className="font-semibold hover:text-green-600"
+          className="font-semibold hover:text-primaryGreen"
         >
           Home
         </button>
         <div className="relative">
           <button
             onClick={() => navigate("/myorders")}
-            className="font-semibold hover:text-green-600"
+            className="font-semibold hover:text-primaryGreen"
           >
             My Orders
           </button>
         </div>
 
-        {/* Icons */}
         <User
           size={22}
-          className="hover:text-green-600 cursor-pointer"
+          className="hover:text-primaryGreen cursor-pointer"
           onClick={() => navigate("/profile")}
         />
-        <Bookmark size={22} className="hover:text-green-600 cursor-pointer" />
+        <Bookmark size={22} className="hover:text-primaryGreen cursor-pointer" />
         <ShoppingCart
           size={22}
-          className="hover:text-green-600 cursor-pointer"
+          className="hover:text-primaryGreen cursor-pointer"
           onClick={() => navigate("/cart")}
         />
       </div>
 
-      {/* Mobile Sidebar Menu (Slide from Left) */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform ${
+        className={`fixed top-0 left-0 h-full w-64 bg-neutralLight shadow-lg transform ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 z-50`}
       >
-        {/* Close Button */}
         <div className="p-4 flex justify-between items-center border-b">
-          <h2 className="text-xl font-bold text-green-700">Our Menu</h2>
+          <h2 className="text-xl font-bold text-darkGreen">Our Menu</h2>
           <button onClick={() => setMenuOpen(false)}>
             <X size={24} className="text-gray-600" />
           </button>
         </div>
 
-        {/* Sidebar Links */}
-        <ul className="p-4 space-y-4 text-gray-700">
+        <ul className="p-4 space-y-4 text-neutralDark">
           <li className="hover:bg-gray-100 p-2 cursor-pointer">
             <Link
               to="#"
@@ -223,7 +211,6 @@ export default function Navbar() {
         </ul>
       </div>
 
-      {/* Background Overlay when menu is open */}
       {menuOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
